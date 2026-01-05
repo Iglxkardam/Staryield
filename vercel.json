@@ -1,0 +1,12 @@
+{
+  "buildCommand": "cd arbstake && npm install && npm run build",
+  "outputDirectory": "arbstake/dist",
+  "installCommand": "cd arbstake && npm install",
+  "framework": null,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
