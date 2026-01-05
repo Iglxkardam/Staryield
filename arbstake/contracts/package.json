@@ -1,0 +1,27 @@
+{
+  "name": "staryield-contracts",
+  "version": "1.0.0",
+  "description": "StarYield Staking Smart Contracts",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:bsc-testnet": "hardhat run scripts/deploy.js --network bscTestnet",
+    "deploy:base-sepolia": "hardhat run scripts/deploy.js --network baseSepolia",
+    "deploy:points:bsc": "hardhat run scripts/deployStarPoints.js --network bscTestnet",
+    "deploy:points:base": "hardhat run scripts/deployStarPoints.js --network baseSepolia",
+    "deploy:full:bsc": "hardhat run scripts/deployStakingWithPoints.js --network bscTestnet",
+    "deploy:full:base": "hardhat run scripts/deployStakingWithPoints.js --network baseSepolia",
+    "export-abi": "node scripts/exportABI.js",
+    "verify:bsc": "hardhat verify --network bscTestnet",
+    "verify:base": "hardhat verify --network baseSepolia"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@openzeppelin/hardhat-upgrades": "^3.0.0",
+    "hardhat": "^2.19.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.1",
+    "dotenv": "^16.3.1"
+  }
+}

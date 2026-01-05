@@ -1,0 +1,6 @@
+/* Wallet connection custom styles */
+
+/* Override RainbowKit modal styles if needed */
+[data-rk] {
+  --rk-fonts-body: 'VCR OSD Mono', monospace;
+}

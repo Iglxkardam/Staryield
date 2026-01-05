@@ -1,0 +1,25 @@
+/* Import Bootstrap */
+@import '../css/bootstrap.min.css';
+
+/* Import Font Awesome */
+@import '../css/all.css';
+
+/* Import Custom Styles */
+@import '../css/style.css';
+@import '../css/admin.css';
+
+* {
+  box-sizing: border-box;
+}
+
+/* Real-time update pulse animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}

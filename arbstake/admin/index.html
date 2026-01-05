@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarYield Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛡️ StarYield Admin Panel</h1>
+            <div id="wallet-info">
+                <button id="connectWallet" class="btn-primary">Connect Wallet</button>
+                <div id="walletAddress" style="display: none;">
+                    <span id="address"></span>
+                    <span id="role" class="role-badge"></span>
+                    <div class="network-switcher">
+                        <button id="switchToBSC" class="btn-network">🟡 Switch to BNB Testnet</button>
+                        <button id="switchToBase" class="btn-network">🔵 Switch to Base Sepolia</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div id="unauthorized" style="display: none;">
+            <div class="alert alert-danger">
+                ⚠️ Access Denied: You are not an admin. Only contract admins can access this panel.
+            </div>
+        </div>
+
+        <div id="adminPanel" style="display: none;">
+            <!-- Contract Status -->
+            <section class="card">
+                <h2>📊 Contract Status</h2>
+                <div class="status-grid">
+                    <div class="stat-box">
+                        <label>Contract State</label>
+                        <div id="contractPaused" class="status-indicator">Loading...</div>
+                        <button id="togglePause" class="btn-secondary">Toggle Pause</button>
+                    </div>
+                    <div class="stat-box">
+                        <label>Total Staked (All Tokens)</label>
+                        <div id="totalStaked" class="stat-value">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <label>Contract Balance</label>
+                        <div id="contractBalance" class="stat-value">0 ETH</div>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; padding: 15px; background: rgba(52, 152, 219, 0.1); border-radius: 8px; border-left: 4px solid #3498db;">
+                    <h3 style="margin: 0 0 10px 0; color: #3498db;">💰 Reward Pool Management</h3>
+                    <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 10px;">
+                        <div style="flex: 1;">
+                            <strong>Reward Pool Balance:</strong> <span id="rewardPoolBalance">Loading...</span>
+                        </div>
+                        <a id="viewRewardPool" href="rewardPool.html" class="btn-primary" style="text-decoration: none;">
+                            🏦 Manage Reward Pool
+                        </a>
+                    </div>
+                    <small style="color: #555;">💡 Reward Pool holds all liquidity for payouts. Fund it regularly to ensure users can claim/unstake.</small>
+                </div>
+            </section>
+
+            <!-- Tier Management -->
+            <section class="card">
+                <h2>⚙️ Tier Configuration</h2>
+                <div class="tier-tabs">
+                    <button class="tier-tab active" data-tier="0">Comet</button>
+                    <button class="tier-tab" data-tier="1">Meteor</button>
+                    <button class="tier-tab" data-tier="2">Supernova</button>
+                </div>
+                <div class="tier-form">
+                    <div class="form-group">
+                        <label>Locking Period (days)</label>
+                        <input type="number" id="lockingPeriod" placeholder="14">
+                    </div>
+                    <div class="form-group">
+                        <label>Minimum Investment (ETH/BNB)</label>
+                        <input type="text" id="minInvestment" placeholder="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>APY Rate (%)</label>
+                        <input type="number" id="apyRate" placeholder="6" step="0.01">
+                    </div>
+                    <button id="updateTier" class="btn-primary">Update Tier</button>
+                </div>
+                <div class="tier-info">
+                    <h3>Current Configuration:</h3>
+                    <div id="currentTierInfo">Select a tier to view details</div>
+                </div>
+            </section>
+
+            <!-- Admin Management -->
+            <section class="card">
+                <h2>👥 Admin Management</h2>
+                <div class="form-group">
+                    <label>Admin Address</label>
+                    <input type="text" id="adminAddress" placeholder="0x...">
+                </div>
+                <div class="button-group">
+                    <button id="addAdmin" class="btn-success">Add Admin</button>
+                    <button id="removeAdmin" class="btn-danger">Remove Admin</button>
+                </div>
+                <div class="admin-list">
+                    <h3>Current Admins:</h3>
+                    <div id="adminList">Loading...</div>
+                </div>
+            </section>
+
+            <!-- Star Points Lookup -->
+            <section class="card">
+                <h2>⭐ Star Points Lookup</h2>
+                <div class="form-group">
+                    <label>Enter User Address to View Their Star Points (Across All Chains)</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="lookupStarPointsAddress" placeholder="0x..." style="flex: 1;">
+                        <button id="lookupStarPoints" class="btn-primary">View Star Points</button>
+                    </div>
+                </div>
+                <div id="starPointsDisplay" style="margin-top: 20px;">
+                    <p class="text-muted">Enter a user address to view their total star points</p>
+                </div>
+            </section>
+
+            <!-- User Stakes Lookup -->
+            <section class="card">
+                <h2>🔍 User Stakes & Points Lookup</h2>
+                <div class="form-group">
+                    <label>Enter User Address to View Their Stakes & Star Points</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="lookupUserAddress" placeholder="0x..." style="flex: 1;">
+                        <button id="lookupStakes" class="btn-primary">View Stakes & Points</button>
+                    </div>
+                </div>
+                <div id="userStakesList" style="margin-top: 20px;">
+                    <p class="text-muted">Enter a user address to view their stakes and star points</p>
+                </div>
+            </section>
+
+            <!-- Emergency Functions -->
+            <section class="card">
+                <h2>🚨 Emergency & Withdrawal Functions</h2>
+                <div class="emergency-grid">
+                    <div>
+                        <label>User Emergency Withdrawal</label>
+                        <input type="text" id="emergencyUser" placeholder="0x...">
+                        <input type="number" id="emergencyStakeId" placeholder="Stake ID">
+                        <button id="emergencyWithdraw" class="btn-danger">Emergency Withdraw</button>
+                        <small style="display: block; margin-top: 8px; color: #666;">💡 Use "View Stakes" above to find stake IDs</small>
+                    </div>
+                    <div>
+                        <label>Direct Admin Withdrawal</label>
+                        <input type="text" id="withdrawAmount" placeholder="Amount in ETH/BNB">
+                        <input type="text" id="withdrawRecipient" placeholder="Recipient Address">
+                        <button id="directWithdraw" class="btn-warning">Withdraw Funds</button>
+                        <small style="color: #856404; display: block; margin-top: 8px;">⚡ Any admin can withdraw directly</small>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Multi-Sig Withdrawals (Optional) -->
+            <section class="card">
+                <h2>✅ Multi-Sig Withdrawal Requests (Optional - Requires 3 Approvals)</h2>
+                <div style="margin-bottom: 15px;">
+                    <input type="text" id="multiSigAmount" placeholder="Amount in ETH/BNB">
+                    <input type="text" id="multiSigRecipient" placeholder="Recipient Address">
+                    <button id="requestWithdrawal" class="btn-secondary">Create Multi-Sig Request</button>
+                </div>
+                <div id="pendingWithdrawals">
+                    <p class="text-muted">No pending multi-sig requests</p>
+                </div>
+            </section>
+
+            <!-- Recent Transactions -->
+            <section class="card">
+                <h2>📋 Recent Events</h2>
+                <div id="recentEvents" class="events-list">
+                    <p class="text-muted">Loading events...</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script>
+        // Wait for ethers to load
+        window.addEventListener('load', function() {
+            if (typeof ethers === 'undefined') {
+                alert('Failed to load ethers.js library. Please check your internet connection.');
+            }
+        });
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+node_modules
+.env
+cache
+artifacts
+deployments/*.json
+coverage
+coverage.json
+typechain
+typechain-types
+
+# Hardhat files
+cache
+artifacts
+
+# Deployment files (keep structure, ignore content)
+!deployments/.gitkeep

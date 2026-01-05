@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RewardPool Admin</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💰 RewardPool Admin</h1>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <button id="connectWallet" class="btn btn-primary">Connect Wallet</button>
+                <div id="walletInfo" style="display: none;">
+                    <span id="walletAddress"></span>
+                    <span id="walletNetwork"></span>
+                </div>
+                <div id="networkSwitcher" style="display: none; margin-left: auto;">
+                    <button id="switchToBSC" class="btn-network">🟡 BSC Testnet</button>
+                    <button id="switchToBase" class="btn-network">🔵 Base Sepolia</button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Pool Status -->
+            <section class="card">
+                <h2>Pool Status</h2>
+                <div class="status-grid">
+                    <div class="status-item">
+                        <label>Current Network:</label>
+                        <span id="currentNetwork">-</span>
+                    </div>
+                    <div class="status-item">
+                        <label>Pool Address (BSC):</label>
+                        <span style="font-size: 0.85rem;">0x259f2AC8BB77E575ADD1B859D7AFc57Eb5CD05D0</span>
+                    </div>
+                    <div class="status-item">
+                        <label>Pool Address (Base):</label>
+                        <span style="font-size: 0.85rem;">0x1018Ea97C3540d9dB123392705096f5B93cD46C9</span>
+                    </div>
+                </div>
+                <div class="status-grid" style="margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
+                    <div class="status-item">
+                        <label>🟡 BSC Testnet Balance:</label>
+                        <span id="bscBalance" style="font-size: 1.2rem; font-weight: bold;">Loading...</span>
+                    </div>
+                    <div class="status-item">
+                        <label>🔵 Base Sepolia Balance:</label>
+                        <span id="baseBalance" style="font-size: 1.2rem; font-weight: bold;">Loading...</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Deposit Funds -->
+            <section class="card">
+                <h2>💵 Deposit Liquidity</h2>
+                <p style="opacity: 0.8; margin-bottom: 1rem;">You are depositing to: <strong id="depositNetwork">Connect wallet first</strong></p>
+                <div class="form-group">
+                    <label>Amount:</label>
+                    <input type="number" id="depositAmount" step="0.001" placeholder="0.0">
+                    <button onclick="depositNative()" class="btn btn-success" style="width: 100%;">
+                        Deposit <span id="depositCurrency">BNB/ETH</span>
+                    </button>
+                </div>
+                <p style="font-size: 0.875rem; opacity: 0.7; margin-top: 0.5rem;">
+                    💡 Switch network in MetaMask to deposit to different pool
+                </p>
+            </section>
+
+            <!-- Authorized Contracts -->
+            <section class="card">
+                <h2>🔐 Authorized Staking Contracts</h2>
+                <div class="form-group">
+                    <label>Staking Contract Address:</label>
+                    <input type="text" id="stakingContractAddress" placeholder="0x...">
+                    <button onclick="authorizeStakingContract()" class="btn btn-primary">Authorize Contract</button>
+                </div>
+            </section>
+
+            <!-- Emergency Withdrawal -->
+            <section class="card">
+                <h2>⚠️ Emergency Withdrawal</h2>
+                <div class="form-group">
+                    <label>Recipient Address:</label>
+                    <input type="text" id="emergencyRecipient" placeholder="0x...">
+                    <label>Amount (BNB/ETH):</label>
+                    <input type="number" id="emergencyAmount" step="0.001" placeholder="0.0">
+                    <button onclick="emergencyWithdraw()" class="btn btn-danger">Emergency Withdraw</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="rewardPoolAdmin.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+/* Additional App-specific styles */
+
+/* Import wallet styles */
+@import './styles/wallet.css';
